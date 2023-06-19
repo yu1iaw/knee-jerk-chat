@@ -26,7 +26,7 @@ h1 {
     font-weight: 100;
     color: var(--primary);
     text-shadow: 2px 1px 5px var(--primary-text);
-    text-align: end;
+    /* text-align: end; */
 }
 
 #appContainer {
@@ -194,6 +194,13 @@ button:hover {
     color: var(--secondary-text);
 }
 
+/* .svg-container {
+    overflow: hidden;
+    width: 45px;
+    height: 45px;
+    display: flex;
+} */
+
 svg {
     animation: logo-spin infinite 18s linear;
     pointer-events: none;
@@ -206,4 +213,4 @@ svg {
     to {
       transform: rotate(360deg);
     }
-  }
+}

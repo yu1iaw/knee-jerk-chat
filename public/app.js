@@ -12,7 +12,7 @@ const loginContainer = document.querySelector('#login');
 const usernameInput = document.querySelector('#usernameInput');
 const loginBtn = document.querySelector('#loginBtn');
 
-const messages = []; // { author, date, content, type }
+let messages = localStorage.getItem('messages') ? JSON.parse(localStorage.getItem('messages')) : []; // { author, date, content, type }
 var socket = io();
 
 socket.on('message', (message) => {
@@ -26,9 +26,11 @@ socket.on('message', (message) => {
         }
     }
     messages.push(message);
+    localStorage.setItem('messages', JSON.stringify(messages));
     displayMessages();
 
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+    //chatContainer.scrollTop = chatContainer.scrollHeight;
+    chatContainer.scrollTop = messagesList.scrollHeight
 })
 
 const createMessageHTML = (message) => {
@@ -69,6 +71,7 @@ loginBtn.addEventListener('click', (e) => {
 
     sendMessage({
         author: username,
+        date: new Date(),
         type: messagesTypes.LOGIN
     });
 
@@ -102,3 +105,22 @@ sendBtn.addEventListener('click', (e) => {
 const sendMessage = (message) => {
     socket.emit('message', message);
 }
+
+
+const resetStorage = () => {
+    if (!messages.length) return;
+
+    const date = messages[0].date;
+ 
+    if (new Date() - new Date(date) >= 86400000) {
+        localStorage.clear();
+        messages = [];
+    }
+    // 604800000 - 7days
+    // if (new Date().getDay() === 1) {
+    //     localStorage.clear();
+    //     messages = [];
+    // }
+}
+
+resetStorage()
