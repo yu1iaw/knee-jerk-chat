@@ -141,6 +141,8 @@ button {
     height: 40px;
     border: none;
     padding: 0 15px;
+    line-height: 40px;
+    text-align: center;
     font-family: 'Righteous', cursive;
     color: var(--dark-primary);
     background-color: var(--accent-color);
@@ -193,13 +195,6 @@ button:hover {
     font-size: 14px;
     color: var(--secondary-text);
 }
-
-/* .svg-container {
-    overflow: hidden;
-    width: 45px;
-    height: 45px;
-    display: flex;
-} */
 
 svg {
     animation: logo-spin infinite 18s linear;

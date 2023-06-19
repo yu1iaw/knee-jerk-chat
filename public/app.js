@@ -111,11 +111,11 @@ const resetStorage = () => {
 
     const date = messages[0].date;
  
-    if (new Date() - new Date(date) >= 86400000) {
+    if (new Date() - new Date(date) >= 604800000) {
         localStorage.clear();
         messages = [];
     }
-    // 604800000 - 7days
+    // 86400000 - 1day
     // if (new Date().getDay() === 1) {
     //     localStorage.clear();
     //     messages = [];
