@@ -29,8 +29,7 @@ socket.on('message', (message) => {
     localStorage.setItem('messages', JSON.stringify(messages));
     displayMessages();
 
-    //chatContainer.scrollTop = chatContainer.scrollHeight;
-    chatContainer.scrollTop = messagesList.scrollHeight
+    chatContainer.scrollTop = chatContainer.scrollHeight;
 })
 
 const createMessageHTML = (message) => {
