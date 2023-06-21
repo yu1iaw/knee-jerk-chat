@@ -26,3 +26,6 @@ io.on('connection', (socket) => {
 http.listen(3000, () => {
     console.log(`listening on port http://localhost:3000`);
 })
+
+// terminal command: 
+//   node server.js

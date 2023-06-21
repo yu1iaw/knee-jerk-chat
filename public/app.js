@@ -24,6 +24,10 @@ socket.on('message', (message) => {
         } else {
             message.type = messagesTypes.LEFT;
         }
+    } else {
+        if (message.author !== username) {
+            getNotification(message.author);
+        }
     }
     messages.push(message);
     localStorage.setItem('messages', JSON.stringify(messages));
@@ -115,11 +119,19 @@ const resetStorage = () => {
         localStorage.clear();
         messages = [];
     }
-    // 86400000 - 1day
-    // if (new Date().getDay() === 1) {
-    //     localStorage.clear();
-    //     messages = [];
-    // }
 }
 
 resetStorage()
+
+
+const getNotification = (author) => {
+    Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+            new Notification('KNEE-JERK CHAT', {
+                body: `${author} has joined the chat...`,
+                // tag: "trigger notification",
+                icon: 'icons8-chat-32.png'
+            })
+        }
+    })
+}
