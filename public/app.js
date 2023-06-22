@@ -12,6 +12,7 @@ const loginContainer = document.querySelector('#login');
 const usernameInput = document.querySelector('#usernameInput');
 const loginBtn = document.querySelector('#loginBtn');
 
+const audio = new Audio('dazzle-hit-and-birds.wav');
 let messages = localStorage.getItem('messages') ? JSON.parse(localStorage.getItem('messages')) : []; // { author, date, content, type }
 var socket = io();
 
@@ -23,6 +24,7 @@ socket.on('message', (message) => {
             message.type = messagesTypes.RIGHT;
         } else {
             message.type = messagesTypes.LEFT;
+            audio.play();
         }
     } else {
         if (message.author !== username) {
