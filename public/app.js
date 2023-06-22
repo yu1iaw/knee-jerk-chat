@@ -1,4 +1,4 @@
-const messagesTypes = { LEFT: 'left', RIGHT: 'right', LOGIN: 'login' };
+const messagesTypes = { LEFT: 'left', RIGHT: 'right', LOGIN: 'login', LOGOUT: 'logout' };
 
 // Chat Stuff
 const chatContainer = document.querySelector('#chat');
@@ -18,7 +18,7 @@ var socket = io();
 socket.on('message', (message) => {
     console.log(message);
 
-    if (message.type !== messagesTypes.LOGIN) {
+    if (message.type !== messagesTypes.LOGIN && message.type !== messagesTypes.LOGOUT) {
         if (message.author === username) {
             message.type = messagesTypes.RIGHT;
         } else {
@@ -26,7 +26,7 @@ socket.on('message', (message) => {
         }
     } else {
         if (message.author !== username) {
-            getNotification(message.author);
+            getNotification(message);
         }
     }
     messages.push(message);
@@ -41,8 +41,14 @@ const createMessageHTML = (message) => {
         return `
             <p class="secondary-text text-center mb-2">${message.author} has joined the chat...</p>
         `;
-        
     }
+
+    if (message.type === messagesTypes.LOGOUT) {
+        return `
+            <p class="secondary-text text-center mb-2">${message.author} has left the chat...</p>
+        `;
+    }
+    
     return `
         <div class="message ${message.type === messagesTypes.LEFT ? 'message-left' : 'message-right'}">
             <div class="message-details flex">
@@ -115,7 +121,7 @@ const resetStorage = () => {
 
     const date = messages[0].date;
  
-    if (new Date() - new Date(date) >= 604800000) {
+    if (new Date() - new Date(date) >= 432000000) {
         localStorage.clear();
         messages = [];
     }
@@ -124,14 +130,32 @@ const resetStorage = () => {
 resetStorage()
 
 
-const getNotification = (author) => {
+const getNotification = (message) => {
     Notification.requestPermission().then(permission => {
         if (permission === 'granted') {
             new Notification('KNEE-JERK CHAT', {
-                body: `${author} has joined the chat...`,
+                body: `${message.author} has ${message.type === messagesTypes.LOGIN ? 'joined' : 'left'} the chat...`,
                 // tag: "trigger notification",
                 icon: 'icons8-chat-32.png'
             })
         }
     })
 }
+
+let timeoutId;
+
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden" && username) {
+        timeoutId = setTimeout(() => {
+            sendMessage({
+                author: username,
+                date: new Date(),
+                type: messagesTypes.LOGOUT
+            });
+
+            location.reload();
+        }, 180000)
+    } else {
+        if (timeoutId) clearTimeout(timeoutId)
+    }
+})
