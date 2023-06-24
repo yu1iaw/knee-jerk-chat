@@ -12,7 +12,7 @@ const loginContainer = document.querySelector('#login');
 const usernameInput = document.querySelector('#usernameInput');
 const loginBtn = document.querySelector('#loginBtn');
 
-const audio = new Audio('dazzle-hit-and-birds.wav');
+const audio = new Audio('little-boy-saying-hiya.wav');
 let messages = localStorage.getItem('messages') ? JSON.parse(localStorage.getItem('messages')) : []; // { author, date, content, type }
 var socket = io();
 
