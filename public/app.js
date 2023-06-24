@@ -14,7 +14,7 @@ const loginBtn = document.querySelector('#loginBtn');
 
 const audio = new Audio('little-boy-saying-hiya.wav');
 let messages = localStorage.getItem('messages') ? JSON.parse(localStorage.getItem('messages')) : []; // { author, date, content, type }
-var socket = io();
+var socket = io({closeOnBeforeunload: false});
 
 socket.on('message', (message) => {
     console.log(message);
@@ -159,5 +159,15 @@ document.addEventListener("visibilitychange", () => {
         }, 180000)
     } else {
         if (timeoutId) clearTimeout(timeoutId)
+    }
+})
+
+window.addEventListener("beforeunload", (e) => {
+    if (document.visibilityState !== "hidden" && username) {
+        sendMessage({
+            author: username,
+            date: new Date(),
+            type: messagesTypes.LOGOUT
+        });
     }
 })
