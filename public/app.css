@@ -159,6 +159,12 @@ button:hover {
     background-color: var(--text-icons);
     padding: 20px 15px;
     overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+#chat::-webkit-scrollbar {
+    display: none;
 }
 
 .message {

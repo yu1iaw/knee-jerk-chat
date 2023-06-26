@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gasoek+One&family=Righteous&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <title>Knee-jerk chat</title>
 	<link rel="icon" type="image/x-icon" href="/icons8-chat-32.png">
 
@@ -31,9 +32,9 @@
                 <input type="text" name="message" id="messageInput" placeholder="enter a message" class="flex-grow-1">
                 <button id="sendBtn">SEND</button>
             </form>
-            <section id="login" class="">
-                <h2 class="text-center">Get Started</h2>
-                <form id="loginForm" class="flex">
+            <section id="login" data-aos="flip-up">
+                <h2 class="text-center" data-aos="flip-up" data-aos-delay="700">Get Started</h2>
+                <form id="loginForm" class="flex" data-aos="zoom-in" data-aos-delay="200">
                     <input type="text" name="username" id="usernameInput" placeholder="username" class="flex-grow-1">
                     <button id="loginBtn">CHAT!</button>
                 </form>
@@ -45,6 +46,7 @@
             </section>
         </div>
     </div>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.2/socket.io.js"></script>
     <script src="app.js"></script>
 </body>

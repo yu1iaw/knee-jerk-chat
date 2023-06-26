@@ -1,3 +1,8 @@
+AOS.init({
+    duration: 1000,
+    offset: 100
+});
+
 const messagesTypes = { LEFT: 'left', RIGHT: 'right', LOGIN: 'login', LOGOUT: 'logout' };
 
 // Chat Stuff
