@@ -29,7 +29,16 @@ socket.on('message', (message) => {
             message.type = messagesTypes.RIGHT;
         } else {
             message.type = messagesTypes.LEFT;
-            audio.play();
+            let promise = audio.play();
+            if (promise !== undefined) {
+                promise.then(_ => promise)
+                .catch(_ => {
+                    new Notification('KNEE-JERK CHAT', {
+                        body: `${message.author} sent a message...`,
+                        icon: 'icons8-chat-32.png',
+                    })
+                });
+            }
         }
     } else {
         if (message.author !== username) {
