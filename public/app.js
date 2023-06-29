@@ -19,11 +19,11 @@ const loginBtn = document.querySelector('#loginBtn');
 
 const audio = new Audio('little-boy-saying-hiya.wav');
 let messages = localStorage.getItem('messages') ? JSON.parse(localStorage.getItem('messages')) : []; // { author, date, content, type }
-var socket = io({closeOnBeforeunload: false});
+var socket = io();
+// {closeOnBeforeunload: false}
 
 socket.on('message', (message) => {
-    console.log(message);
-
+    // console.log(message);
     if (message.type !== messagesTypes.LOGIN && message.type !== messagesTypes.LOGOUT) {
         if (message.author === username) {
             message.type = messagesTypes.RIGHT;
@@ -36,6 +36,7 @@ socket.on('message', (message) => {
                     new Notification('KNEE-JERK CHAT', {
                         body: `${message.author} sent a message...`,
                         icon: 'icons8-chat-32.png',
+                        tag: "trigger notification"
                     })
                 });
             }
@@ -97,7 +98,8 @@ loginBtn.addEventListener('click', (e) => {
     sendMessage({
         author: username,
         date: new Date(),
-        type: messagesTypes.LOGIN
+        type: messagesTypes.LOGIN,
+        id: socket.id
     });
 
     loginContainer.classList.add('hidden');
@@ -118,8 +120,7 @@ sendBtn.addEventListener('click', (e) => {
     const message = {
         author: username,
         date: dateString,
-        content: messagesInput.value,
-        // type: messagesTypes.RIGHT
+        content: messagesInput.value
     };
 
     sendMessage(message);
@@ -138,7 +139,7 @@ const resetStorage = () => {
     const date = messages[0].date;
  
     if (new Date() - new Date(date) >= 432000000) {
-        localStorage.clear();
+        localStorage.removeItem("messages");
         messages = [];
     }
 }
@@ -151,7 +152,6 @@ const getNotification = (message) => {
         if (permission === 'granted') {
             new Notification('KNEE-JERK CHAT', {
                 body: `${message.author} has ${message.type === messagesTypes.LOGIN ? 'joined' : 'left'} the chat...`,
-                // tag: "trigger notification",
                 icon: 'icons8-chat-32.png'
             })
         }
@@ -163,11 +163,11 @@ let timeoutId;
 document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden" && username) {
         timeoutId = setTimeout(() => {
-            sendMessage({
-                author: username,
-                date: new Date(),
-                type: messagesTypes.LOGOUT
-            });
+            // sendMessage({
+            //     author: username,
+            //     date: new Date(),
+            //     type: messagesTypes.LOGOUT
+            // });
 
             location.reload();
         }, 180000)
@@ -176,12 +176,12 @@ document.addEventListener("visibilitychange", () => {
     }
 })
 
-window.addEventListener("beforeunload", (e) => {
-    if (document.visibilityState !== "hidden" && username) {
-        sendMessage({
-            author: username,
-            date: new Date(),
-            type: messagesTypes.LOGOUT
-        });
-    }
-})
+// window.addEventListener("beforeunload", (e) => {
+//     if (document.visibilityState !== "hidden" && username) {
+//         sendMessage({
+//             author: username,
+//             date: new Date(),
+//             type: messagesTypes.LOGOUT
+//         });
+//     }
+// })
